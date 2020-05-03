@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<meta charset="UTF-8" />
+		<style type="text/css">
+			* {
+				padding: 0;
+				margin: 0;
+			}
+
+			html {
+				background: #FFFFFF;
+			}
+
+			body {
+				display: block;
+				width: 100vw;
+				height: 100vh;
+				cursor: pointer !important;
+				border-radius: 100%;
+			}
+			
+			body[data-status="false"] {
+				background: #FF0000;
+			}
+			
+			body[data-status="true"] {
+				background: #00FF00;
+			}
+		</style>
+	</head>
+	<body data-status="false">
+		<script type="text/javascript">
+			let _interval	= null;
+			let _dice		= 13378;
+			let _time		= 1000 * 60 * 5;
+			
+			function start() {
+				if(typeof(_interval) !== 'undefined') {
+					clearInterval(_interval);
+				}
+				
+				_interval = setInterval(function OnTick() {
+					if(document.body.dataset.status === 'true') {
+						Client.executeSlashCommand('/dice 1w' + _dice);
+					}
+				}, _time);
+			}
+			
+			document.addEventListener('click', function OnClick() {
+				if(document.body.dataset.status === 'true') {
+					document.body.dataset.status = 'false';
+				} else {
+					document.body.dataset.status = 'true';
+				}
+				
+				start();
+			}, false);
+			
+			document.querySelector('html').style.background = Client.pageData.channel.background;
+	  
+			start();
+		</script>
+	</body>
+</html>
